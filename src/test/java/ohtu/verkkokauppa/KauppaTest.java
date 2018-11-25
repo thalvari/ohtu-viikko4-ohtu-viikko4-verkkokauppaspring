@@ -134,4 +134,17 @@ public class KauppaTest {
         verify(viite).uusi();
     }
 
+    @Test
+    public void josTuotePoistetaanKoristaVarastonMetodiaPalautaVarastoonKutsutaan() {
+        Pankki pankki = mock(Pankki.class);
+        Viitegeneraattori viite = mock(Viitegeneraattori.class);
+        Varasto varasto = mock(Varasto.class);
+        when(varasto.haeTuote(1)).thenReturn(new Tuote(1, "maito", 5));
+        Kauppa k = new Kauppa(varasto, pankki, viite);
+        k.aloitaAsiointi();
+        k.lisaaKoriin(1);
+        k.poistaKorista(1);
+        verify(varasto).palautaVarastoon(anyObject());
+    }
+
 }
